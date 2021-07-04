@@ -1,7 +1,8 @@
 package ufrn.tads.eaj.matterconstrucao.model;
 
 public class Produtos {
-    private String nomeProduto;
+        private int idProduto;
+        private String nomeProduto;
         private String descricao;
         private String fabricante;
         private String categoria;
@@ -9,7 +10,15 @@ public class Produtos {
         private float precoProduto;
         private float precoCompraProduto;
 
-        public String getNomeProduto() {
+    public int getIdProduto() {
+        return idProduto;
+    }
+
+    public void setIdProduto(int idProduto) {
+        this.idProduto = idProduto;
+    }
+
+    public String getNomeProduto() {
         return nomeProduto;
     }
 
