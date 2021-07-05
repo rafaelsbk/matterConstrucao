@@ -3,8 +3,7 @@ package ufrn.tads.eaj.matterconstrucao.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import ufrn.tads.eaj.matterconstrucao.DAO.AdminDAO;
-import ufrn.tads.eaj.matterconstrucao.DAO.ClienteDAO;
+import ufrn.tads.eaj.matterconstrucao.DAO.ProdutoDAO;
 import ufrn.tads.eaj.matterconstrucao.model.Produtos;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,7 +16,7 @@ public class Cliente {
     @RequestMapping(value = "/cliente", method = RequestMethod.GET)
     public void listarItens(HttpServletRequest request, HttpServletResponse response) throws IOException, ServerException {
 
-        ClienteDAO cliente = new ClienteDAO();
+        ProdutoDAO cliente = new ProdutoDAO();
 
 
         response.getWriter().println("<table>");
@@ -43,7 +42,6 @@ public class Cliente {
             response.getWriter().println("<th>" + c.getCategoria() + "</th>");;
             response.getWriter().println("<th>" + c.getPrecoProduto() + "R$</th>");
             response.getWriter().println("<th>" + c.getPrecoCompraProduto() + "R$</th>");
-            //response.getWriter().println("<th> <a href=\"/adicionarcarrinho?id=\" " + p.getIdProduto() + ">Adicionar ao carrinho</a></th>");
 
             response.getWriter().println("<th> <a href=\"adicionar?id= " + Integer.toString(cliente.clienteA().get(i).getIdProduto())  + " \" >adicionar ao carrinho<a/></th>");
 
@@ -52,12 +50,6 @@ public class Cliente {
             response.getWriter().println("</tr>");
             i++;
         }
-
-        // for (int i = 0; i < pdao.listarProdutos().size(); i++ ){
-        //   response.getWriter().println("<a href=\"adicionarcarrinho?id=" + pdao.listarProdutos().get(i).getIdProduto() + " \" \"></a>");
-        // }
-
-
         response.getWriter().println("</table>");
 
 

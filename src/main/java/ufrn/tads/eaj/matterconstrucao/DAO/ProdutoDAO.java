@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class ClienteDAO {
+public class ProdutoDAO {
     public List<Produtos> clienteA(){
         Connection con = null;
         PreparedStatement pstm = null;
@@ -28,7 +28,7 @@ public class ClienteDAO {
 
             while (rs.next()){
                 Produtos produtos = new Produtos();
-                produtos.setIdProduto(rs.getInt("idproduto"));
+                produtos.setNomeProduto(rs.getString("nomeproduto"));
                 produtos.setDescricao(rs.getString("descricao"));
                 produtos.setFabricante(rs.getString("fabricante"));
                 produtos.setCategoria(rs.getString("categoria"));
@@ -43,5 +43,25 @@ public class ClienteDAO {
             System.out.print (ex);
         }
         return arrayDeProdutos;
+    }
+
+    public void doCadastrar(Produtos produto) {
+        Connection con = null;
+        PreparedStatement pstm = null;
+        try {
+
+            con = DbConnect.getConnection();
+            pstm = con.prepareStatement("INSERT INTO tblProdutos (nomeproduto, descricao, fabricante, categoria, qtdestoque, precoproduto, precocompraproduto) values (?,?,?,?,?,?,?);");
+            pstm.setString(1, produto.getNomeProduto());
+            pstm.setString(2, produto.getDescricao());
+            pstm.setString(3, produto.getFabricante());
+            pstm.setString(4, produto.getCategoria());
+            pstm.setInt(5, produto.getQtdEstoque());
+            pstm.setFloat(6, produto.getPrecoProduto());
+            pstm.setFloat(7, produto.getPrecoCompraProduto());
+            pstm.execute();
+
+        } catch (SQLException | URISyntaxException ex) {
+        }
     }
 }
