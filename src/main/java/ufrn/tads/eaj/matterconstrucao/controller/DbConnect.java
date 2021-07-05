@@ -9,7 +9,7 @@ import java.sql.SQLException;
 
 public class DbConnect {
 
-    static Connection getConnection() throws SQLException, URISyntaxException {
+    public static Connection getConnection() throws SQLException, URISyntaxException {
         String dbUri = System.getenv("DATABASE_HOST");
         String dbPort = System.getenv("DATABASE_PORT");
         String dbName = System.getenv("DATABASE_NAME");
