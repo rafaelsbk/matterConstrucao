@@ -6,19 +6,21 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import ufrn.tads.eaj.matterconstrucao.DAO.ProdutoDAO;
 import ufrn.tads.eaj.matterconstrucao.model.Produtos;
 
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import javax.servlet.http.HttpSession;
 
 @Controller
 public class Admin {
     @RequestMapping(value ="/admin", method= RequestMethod.GET)
     public void cadastrarProduto(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
+        response.getWriter().println ("<body>");
         response.getWriter().println("<form method=\"post\" action=\"/cadastra\">\n" +
                 "  Nome do produto:<input type=\"text\" name=\"nomeproduto\"><br/>\n" +
                 "  Descricao: <input type=\"text\" name=\"descricao\"><br/>\n" +
@@ -29,6 +31,7 @@ public class Admin {
                 "  Preco produto Revenda: <input type=\"number\" name=\"precocompraproduto\"><br/>\n" +
                 "  <button>Cadastrar!</button>\n" +
                 "</form>");
+        response.getWriter().println ("</body>");
     }
 
     @RequestMapping(value = "/cadastra", method = RequestMethod.POST)
@@ -51,11 +54,12 @@ public class Admin {
         prod.setQtdEstoque(qtdestoque);
         prod.setPrecoProduto(precoproduto);
         prod.setPrecoCompraProduto(precocompraproduto);
-
         cdao.doCadastrar(prod);
 
-        Date data = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd-hh:mm:ss");
+        HttpSession session = request.getSession();
+
+        Date data = new Date(session.getCreationTime());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd-hh:mm:ss");
         String currentTime = sdf.format(data);
         Cookie c = new Cookie("acesso",currentTime);
         c.setMaxAge(86400);
