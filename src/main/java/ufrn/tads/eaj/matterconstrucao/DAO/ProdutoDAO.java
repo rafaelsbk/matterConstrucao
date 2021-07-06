@@ -28,6 +28,7 @@ public class ProdutoDAO {
 
             while (rs.next()){
                 Produtos produtos = new Produtos();
+                produtos.setIdProduto(rs.getInt("idproduto"));
                 produtos.setNomeProduto(rs.getString("nomeproduto"));
                 produtos.setDescricao(rs.getString("descricao"));
                 produtos.setFabricante(rs.getString("fabricante"));
@@ -46,12 +47,12 @@ public class ProdutoDAO {
     }
 
     public void doCadastrar(Produtos produto) {
-        Connection con = null;
+        Connection connection = null;
         PreparedStatement pstm = null;
         try {
 
-            con = DbConnect.getConnection();
-            pstm = con.prepareStatement("INSERT INTO tblProdutos (nomeproduto, descricao, fabricante, categoria, qtdestoque, precoproduto, precocompraproduto) values (?,?,?,?,?,?,?);");
+            connection = DbConnect.getConnection();
+            pstm = connection.prepareStatement("INSERT INTO tblprodutos (nomeproduto, descricao, fabricante, categoria, qtdestoque, precoproduto, precocompraproduto) values (?,?,?,?,?,?,?);");
             pstm.setString(1, produto.getNomeProduto());
             pstm.setString(2, produto.getDescricao());
             pstm.setString(3, produto.getFabricante());
@@ -60,8 +61,43 @@ public class ProdutoDAO {
             pstm.setFloat(6, produto.getPrecoProduto());
             pstm.setFloat(7, produto.getPrecoCompraProduto());
             pstm.execute();
+            connection.close();
 
         } catch (SQLException | URISyntaxException ex) {
         }
     }
+    public List<Produtos> listarIdProd(int id) {
+
+        Connection connection = null;
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
+
+        List<Produtos> listaDeProdutos = new ArrayList<>();
+
+        try {
+            connection = DbConnect.getConnection();
+
+            pstm = connection.prepareStatement("select * from tblprodutos where idproduto=?");
+            pstm.setInt(1, id);
+            rs = pstm.executeQuery();
+            //connection.close();
+            if (rs.next()) {
+                Produtos produtos = new Produtos();
+
+                produtos.setIdProduto(rs.getInt("idproduto"));
+                produtos.setNomeProduto(rs.getString("nomeproduto"));
+                produtos.setDescricao(rs.getString("descricao"));
+                produtos.setFabricante(rs.getString("fabricante"));
+                produtos.setCategoria(rs.getString("categoria"));
+                produtos.setQtdEstoque(rs.getInt("qtdestoque"));
+                produtos.setPrecoProduto(rs.getFloat("precoproduto"));
+                produtos.setPrecoCompraProduto(rs.getFloat("precocompraproduto"));
+                listaDeProdutos.add(produtos);
+            }
+        } catch (SQLException | URISyntaxException ex) {
+            //response.getWriter().append("Connection Failed! Check output console");
+        }
+        return listaDeProdutos;
+    }
+
 }
